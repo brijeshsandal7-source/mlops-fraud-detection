@@ -4,19 +4,13 @@ from sagemaker.inputs import TrainingInput
 
 
 def main():
-    """
-    This script triggers a SageMaker training job.
-    It uploads local data to S3 and tells SageMaker
-    to run src/train.py on a managed instance.
-    """
-
-    # Create a SageMaker session
+    # Create SageMaker session
     sagemaker_session = sagemaker.Session()
 
-    # Get execution role (used by SageMaker to access AWS resources)
-   role = arn:aws:iam::561137843760:role/service-role/codebuild-mlops-fraud-role
+    # IMPORTANT: Use explicit IAM role ARN (must be a STRING)
+    role = "arn:aws:iam::561137843760:role/service-role/codebuild-mlops-fraud-role"
 
-    # Use the default SageMaker S3 bucket
+    # Default SageMaker bucket
     bucket = sagemaker_session.default_bucket()
 
     # Upload training data to S3
@@ -28,7 +22,7 @@ def main():
 
     print(f"Training data uploaded to: {train_s3_path}")
 
-    # Define the SKLearn estimator
+    # Define SKLearn estimator
     estimator = SKLearn(
         entry_point="train.py",
         source_dir="src",
@@ -40,13 +34,13 @@ def main():
         sagemaker_session=sagemaker_session,
     )
 
-    # Explicitly define training input as CSV
+    # Explicit CSV input
     train_input = TrainingInput(
         s3_data=train_s3_path,
         content_type="text/csv"
     )
 
-    # Start the training job
+    # Start training job
     estimator.fit({"train": train_input})
 
     print("SageMaker training job started successfully")
