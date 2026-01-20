@@ -14,7 +14,7 @@ def main():
     sagemaker_session = sagemaker.Session()
 
     # Get execution role (used by SageMaker to access AWS resources)
-    role = sagemaker.get_execution_role()
+   role = arn:aws:iam::561137843760:role/service-role/codebuild-mlops-fraud-role
 
     # Use the default SageMaker S3 bucket
     bucket = sagemaker_session.default_bucket()
