@@ -15,8 +15,9 @@ phases:
       - pytest tests/
 
   build:
-    commands:
-      - echo "CI build phase completed"
+  commands:
+    - echo "Starting SageMaker training job"
+    - python3 pipeline/run_training.py
 
 artifacts:
   files:
